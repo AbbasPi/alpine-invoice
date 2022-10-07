@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <script
+            defer
+            src="https://unpkg.com/alpinejs@3.10.4/dist/cdn.min.js"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Invoice</title>
+</head>
+<body class="bg-gray-200">
+<div x-data="function addRemove() {
+      return {
+        fields: [
+        {
+          name: 'Nike',
+          code: 'MK-7',
+          price: '10',
+          quantity: '5',
+        },
+
+  {
+          name: 'Keyboard',
+          code: 'NL-3',
+          price: '50',
+          quantity: '2',
+        },
+        {
+          name: 'Monitor',
+          code: 'AJ-23',
+          price: '499',
+          quantity: '1',
+        },
+        ],
+        addNewField() {
+          this.fields.push({ id: new Date().getTime() + this.fields.length });
+        },
+        removeField(field) {
+          this.fields.splice(this.fields.indexOf(field), 1);
+        },
+      };
+    }" class="max-w-7xl mx-auto bg-white mt-20 p-4 border-gray-300 border-2">
+
+
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-100 uppercase bg-blue-700">
+            <tr>
+                <th scope="col" class="py-3 px-6">
+                    Product name
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Code
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Quantity
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Price
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Amount
+                </th>
+            </tr>
+            </thead>
+            <template x-for="(field, index) in fields" :key="index">
+                <tbody>
+                <tr class="bg-white border-b">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap ">
+                        <input type="text" placeholder="product" x-model="field.name"
+                               class="border-2 p-1 rounded-md w-full">
+                    </th>
+                    <td class="py-4 px-6">
+                        <input type="text" placeholder="code" x-model="field.code" class="border-2 p-1 rounded-md">
+                    </td>
+                    <td class="py-4 px-6">
+                        <input type="number" placeholder="quantity" x-model="field.quantity"
+                               class="border-2 p-1 rounded-md">
+                    </td>
+                    <td class="py-4 px-6">
+                        <input type="number" placeholder="price" x-model="field.price" class="border-2 p-1 rounded-md">
+                    </td>
+                    <td class="py-4 px-6">
+                        <p x-text="field.price * field.quantity + ' $'"></p>
+                    </td>
+                    <td class="py-4 px-6">
+                        <button
+                                type="button"
+                                class="text-3xl text-red-500"
+                                @click="removeField(field)"
+                        >
+                            &times;
+                        </button>
+                    </td>
+                </tr>
+                <button
+                        type="button"
+                        class="btn btn-danger btn-small"
+                        @click="removeField(field)"
+                >
+                    &times;
+                </button>
+                </tbody>
+            </template>
+
+        </table>
+        <div class="flex justify-start">
+            <button type="button" class="bg-blue-700 py-1 px-2 rounded text-white m-2" @click="addNewField()">+ Line
+                Product
+            </button>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
