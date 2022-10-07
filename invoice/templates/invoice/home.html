@@ -12,35 +12,17 @@
 <body class="bg-gray-200">
 <div x-data="function addRemove() {
       return {
-        fields: [
-        {
-          name: 'Nike',
-          code: 'MK-7',
-          price: '10',
-          quantity: '5',
-        },
-
-  {
-          name: 'Keyboard',
-          code: 'NL-3',
-          price: '50',
-          quantity: '2',
-        },
-        {
-          name: 'Monitor',
-          code: 'AJ-23',
-          price: '499',
-          quantity: '1',
-        },
-        ],
+      fields: JSON.parse(localStorage.getItem('fields') || '[]'),
         addNewField() {
-          this.fields.push({ id: new Date().getTime() + this.fields.length });
+          this.fields.push({});
         },
         removeField(field) {
           this.fields.splice(this.fields.indexOf(field), 1);
         },
       };
-    }" class="max-w-7xl mx-auto bg-white mt-20 p-4 border-gray-300 border-2">
+    }"
+     x-init="$watch('fields', (val) => localStorage.setItem('fields', JSON.stringify(val)))"
+     class="max-w-7xl mx-auto bg-white mt-20 p-4 border-gray-300 border-2">
 
 
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
@@ -75,14 +57,15 @@
                         <input type="text" placeholder="code" x-model="field.code" class="border-2 p-1 rounded-md">
                     </td>
                     <td class="py-4 px-6">
-                        <input type="number" placeholder="quantity" x-model="field.quantity"
+                        <input type="number" placeholder="quantity" min="0" x-model="field.quantity "
                                class="border-2 p-1 rounded-md">
                     </td>
                     <td class="py-4 px-6">
-                        <input type="number" placeholder="price" x-model="field.price" class="border-2 p-1 rounded-md">
+                        <input type="number" placeholder="price" min="0" x-model="field.price"
+                               class="border-2 p-1 rounded-md">
                     </td>
                     <td class="py-4 px-6">
-                        <p x-text="field.price * field.quantity + ' $'"></p>
+                        <p x-text="field.price ? field.price * field.quantity + ' $' : 0"></p>
                     </td>
                     <td class="py-4 px-6">
                         <button
