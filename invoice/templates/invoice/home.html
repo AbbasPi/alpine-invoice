@@ -10,8 +10,8 @@
     <title>Invoice</title>
 </head>
 <body class="bg-gray-200">
-<div x-data="function addRemove() {
-      return {
+
+<div x-data="{
       fields: JSON.parse(localStorage.getItem('fields') || '[]'),
         addNewField() {
           this.fields.push({});
@@ -19,11 +19,33 @@
         removeField(field) {
           this.fields.splice(this.fields.indexOf(field), 1);
         },
-      };
-    }"
+      };"
      x-init="$watch('fields', (val) => localStorage.setItem('fields', JSON.stringify(val)))"
      class="max-w-7xl mx-auto bg-white mt-20 p-4 border-gray-300 border-2">
 
+
+    <div class="mb-12">
+        <div class="max-w-3xl">
+            <h1 class="text-gray-900 text-4xl font-bold ">Invoice</h1>
+            <p class="text-gray-600">Invoice #123</p>
+            <div>
+                <label class="text-gray-900 text-xl font-bold">From:</label>
+                <input type="text" value="Abbas" class="mt-2 p-1 border-1 border-gray-400">
+            </div>
+            <div>
+                <label class="text-gray-900 text-xl font-bold">To:</label>
+                <input type="text" value="Ali" class="mt-2 p-1 border-1 border-gray-400">
+            </div>
+            <div>
+                <label class="text-gray-900 text-xl font-bold">Date:</label>
+                <input type="date" class="mt-2 p-1 border-1 border-gray-400">
+            </div>
+            <div>
+                <label class="text-gray-900 text-xl font-bold">Due Date:</label>
+                <input type="date" class="mt-2 p-1 border-1 border-gray-400">
+            </div>
+        </div>
+    </div>
 
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500">
@@ -49,7 +71,7 @@
             <template x-for="(field, index) in fields" :key="index">
                 <tbody>
                 <tr class="bg-white border-b">
-                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap ">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
                         <input type="text" placeholder="product" x-model="field.name"
                                class="border-2 p-1 rounded-md w-full">
                     </th>
@@ -57,7 +79,7 @@
                         <input type="text" placeholder="code" x-model="field.code" class="border-2 p-1 rounded-md">
                     </td>
                     <td class="py-4 px-6">
-                        <input type="number" placeholder="quantity" min="0" x-model="field.quantity "
+                        <input type="number" placeholder="quantity" min="0" x-model="field.quantity"
                                class="border-2 p-1 rounded-md">
                     </td>
                     <td class="py-4 px-6">
@@ -65,7 +87,7 @@
                                class="border-2 p-1 rounded-md">
                     </td>
                     <td class="py-4 px-6">
-                        <p x-text="field.price ? field.price * field.quantity + ' $' : 0"></p>
+                        <p x-text="field.quantity & field.price ? field.price * field.quantity + ' $' : field.price ? field.price * 1 + ' $' : 0"></p>
                     </td>
                     <td class="py-4 px-6">
                         <button
@@ -77,13 +99,6 @@
                         </button>
                     </td>
                 </tr>
-                <button
-                        type="button"
-                        class="btn btn-danger btn-small"
-                        @click="removeField(field)"
-                >
-                    &times;
-                </button>
                 </tbody>
             </template>
 
